@@ -18,6 +18,34 @@
     const scripts = document.getElementsByTagName('script');
     const script = scripts[scripts.length - 1];
     
+    // Automatically detect API URL based on script source or use data attribute if provided
+    function detectApiUrl() {
+        // First check if API URL is explicitly provided as a data attribute
+        const explicitApiUrl = script.getAttribute('data-api-url');
+        if (explicitApiUrl) return explicitApiUrl;
+        
+        // Try to extract domain from script src
+        const scriptSrc = script.src || '';
+        try {
+            // Extract domain from script source
+            const scriptUrl = new URL(scriptSrc);
+            const scriptDomain = `${scriptUrl.protocol}//${scriptUrl.hostname}${scriptUrl.port ? ':' + scriptUrl.port : ''}`;
+            
+            // Check if this is from jsdelivr (GitHub)
+            if (scriptUrl.hostname.includes('jsdelivr.net')) {
+                // Default to Replit domain if script is from CDN
+                return 'https://01eb48f3-0c67-4e54-8672-705edb2d6603-00-16dhjlhgrycbt.kirk.replit.dev/api';
+            }
+            
+            // Otherwise use same domain as script
+            return `${scriptDomain}/api`;
+        } catch (e) {
+            console.error('SimulaSeg: Error detecting API URL:', e);
+            // Fallback to Replit domain
+            return 'https://01eb48f3-0c67-4e54-8672-705edb2d6603-00-16dhjlhgrycbt.kirk.replit.dev/api';
+        }
+    }
+    
     // Get agent data from script attributes
     const config = {
         agentId: script.getAttribute('data-agent-id') || '',
@@ -31,8 +59,11 @@
         accentColor: script.getAttribute('data-accent-color') || '#ffc107',
         formspreeCode: script.getAttribute('data-formspree-code') || '',
         simulatorTitle: script.getAttribute('data-simulator-title') || 'SIMULE SUA PROTEÇÃO COM BENEFÍCIO EM VIDA',
-        apiUrl: 'https://simulaseg.repl.co/api'
+        apiUrl: detectApiUrl()
     };
+    
+    // Log the detected API URL for debugging
+    console.log('SimulaSeg: Using API URL:', config.apiUrl);
     
     // Container element
     const container = document.getElementById('simulaseg-embed');
@@ -66,6 +97,7 @@
         })
         .then(response => response.json())
         .then(data => {
+            console.log('SimulaSeg: Agent status check response:', data);
             callback(data.available === true);
         })
         .catch(error => {
