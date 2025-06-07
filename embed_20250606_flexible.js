@@ -139,181 +139,237 @@
     
     // Function to load simulator
     function loadSimulator() {
-        // Add CSS styles
+        // Add CSS styles - UPDATED WITH MODERN DESIGN
         const styles = `
+            @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+            
             .simulaseg-container {
-                font-family: 'Arial', sans-serif;
+                font-family: 'Poppins', sans-serif;
                 max-width: 800px;
                 margin: 0 auto;
                 padding: 20px;
                 box-sizing: border-box;
                 color: #333;
+                box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+                border-radius: 12px;
             }
             .simulaseg-container * {
                 box-sizing: border-box;
             }
             .simulaseg-header {
-                background-color: ${config.primaryColor};
+                background: linear-gradient(135deg, ${config.primaryColor}, ${adjustColor(config.primaryColor, -30)});
                 color: white;
-                padding: 15px;
+                padding: 20px;
                 text-align: center;
-                border-radius: 5px 5px 0 0;
+                border-radius: 12px 12px 0 0;
                 margin-bottom: 0;
+                box-shadow: 0 4px 6px rgba(0,0,0,0.1);
             }
             .simulaseg-header h1 {
                 margin: 0;
-                font-size: 1.5em;
+                font-size: 1.6em;
+                font-weight: 600;
+                letter-spacing: 0.5px;
             }
             .simulaseg-card {
-                background-color: #f9f9f9;
-                padding: 20px;
-                border-radius: 0 0 5px 5px;
-                border: 1px solid #ddd;
+                background-color: #ffffff;
+                padding: 25px;
+                border-radius: 0 0 12px 12px;
+                border: 1px solid #eaeaea;
                 border-top: none;
             }
             .simulaseg-row {
                 display: flex;
                 flex-wrap: wrap;
-                margin-bottom: 15px;
+                margin-bottom: 20px;
+                gap: 20px;
             }
             .simulaseg-col {
                 flex: 1;
-                padding: 0 10px;
                 min-width: 200px;
             }
             .simulaseg-form-group {
-                margin-bottom: 15px;
+                margin-bottom: 20px;
             }
             .simulaseg-form-group label {
                 display: block;
-                margin-bottom: 5px;
-                font-weight: bold;
+                margin-bottom: 8px;
+                font-weight: 500;
+                color: #444;
+                font-size: 0.95em;
             }
             .simulaseg-form-group input,
             .simulaseg-form-group select {
                 width: 100%;
-                padding: 8px;
-                border: 1px solid #ddd;
-                border-radius: 4px;
+                padding: 12px;
+                border: 2px solid #e0e0e0;
+                border-radius: 8px;
+                font-family: 'Poppins', sans-serif;
+                font-size: 0.95em;
+                transition: all 0.3s ease;
+            }
+            .simulaseg-form-group input:focus,
+            .simulaseg-form-group select:focus {
+                border-color: ${config.primaryColor};
+                outline: none;
+                box-shadow: 0 0 0 3px ${hexToRgba(config.primaryColor, 0.2)};
             }
             .simulaseg-radio-group {
                 display: flex;
-                gap: 15px;
+                gap: 20px;
             }
             .simulaseg-radio-option {
                 display: flex;
                 align-items: center;
             }
             .simulaseg-radio-option input {
-                margin-right: 5px;
+                margin-right: 8px;
                 width: auto;
+                accent-color: ${config.primaryColor};
             }
             .simulaseg-btn {
-                background-color: ${config.secondaryColor};
+                background: linear-gradient(135deg, ${config.secondaryColor}, ${adjustColor(config.secondaryColor, -20)});
                 color: white;
                 border: none;
-                padding: 10px 15px;
-                border-radius: 4px;
+                padding: 14px 20px;
+                border-radius: 8px;
                 cursor: pointer;
                 font-size: 1em;
+                font-weight: 600;
                 width: 100%;
-                margin-top: 10px;
+                margin-top: 15px;
+                transition: all 0.3s ease;
+                box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+                letter-spacing: 0.5px;
             }
             .simulaseg-btn:hover {
-                opacity: 0.9;
+                transform: translateY(-2px);
+                box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+            }
+            .simulaseg-btn:active {
+                transform: translateY(0);
             }
             .simulaseg-result-section {
-                margin-top: 20px;
-                padding: 15px;
-                background-color: #f0f0f0;
-                border-radius: 5px;
+                margin-top: 25px;
+                padding: 20px;
+                background-color: #f8f9fa;
+                border-radius: 10px;
                 display: none;
+                border-left: 4px solid ${config.primaryColor};
+                box-shadow: 0 4px 6px rgba(0,0,0,0.05);
             }
             .simulaseg-result-title {
                 font-size: 1.2em;
-                margin-bottom: 10px;
+                margin-bottom: 15px;
+                font-weight: 600;
+                color: #333;
             }
             .simulaseg-result-price {
-                font-size: 1.5em;
+                font-size: 1.8em;
                 color: ${config.primaryColor};
-                font-weight: bold;
-                margin-bottom: 10px;
+                font-weight: 700;
+                margin-bottom: 15px;
             }
             .simulaseg-result-note {
-                font-size: 0.8em;
+                font-size: 0.85em;
                 color: #666;
                 margin-bottom: 15px;
+                line-height: 1.5;
             }
             .simulaseg-alert-box {
                 background-color: #e7f5ff;
                 border: 1px solid #b8daff;
-                padding: 10px;
-                border-radius: 4px;
-                margin-bottom: 15px;
+                padding: 15px;
+                border-radius: 8px;
+                margin-bottom: 20px;
+                box-shadow: 0 2px 4px rgba(0,0,0,0.05);
             }
             .simulaseg-alert-title {
-                font-weight: bold;
-                margin-bottom: 5px;
+                font-weight: 600;
+                margin-bottom: 8px;
+                color: #0056b3;
             }
             .simulaseg-lead-section {
-                margin-top: 15px;
+                margin-top: 25px;
+                padding-top: 20px;
+                border-top: 1px solid #eaeaea;
             }
             .simulaseg-thank-you-section {
                 text-align: center;
-                padding: 20px;
-                background-color: #e7f5ff;
-                border-radius: 5px;
-                margin-top: 20px;
+                padding: 30px;
+                background-color: #f0f9ff;
+                border-radius: 10px;
+                margin-top: 25px;
                 display: none;
+                box-shadow: 0 4px 6px rgba(0,0,0,0.05);
             }
             .simulaseg-thank-you-title {
-                font-size: 1.5em;
-                margin-bottom: 10px;
+                font-size: 1.6em;
+                margin-bottom: 15px;
                 color: ${config.primaryColor};
+                font-weight: 600;
             }
             .simulaseg-whatsapp-btn {
                 background-color: #25D366;
                 color: white;
                 text-decoration: none;
-                padding: 10px 15px;
-                border-radius: 4px;
+                padding: 12px 20px;
+                border-radius: 8px;
                 display: inline-block;
-                margin-top: 15px;
+                margin-top: 20px;
+                font-weight: 600;
+                transition: all 0.3s ease;
+                box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            }
+            .simulaseg-whatsapp-btn:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 6px 12px rgba(0,0,0,0.15);
             }
             .simulaseg-error-message {
                 color: #dc3545;
-                font-size: 0.8em;
-                margin-top: 5px;
+                font-size: 0.85em;
+                margin-top: 6px;
                 display: none;
             }
             .simulaseg-contact-info-title,
             .simulaseg-insurance-question-title {
-                font-size: 1.1em;
-                margin-bottom: 10px;
-                border-bottom: 1px solid #ddd;
-                padding-bottom: 5px;
+                font-size: 1.15em;
+                margin-bottom: 15px;
+                border-bottom: 1px solid #eaeaea;
+                padding-bottom: 8px;
+                font-weight: 600;
+                color: #444;
             }
             .simulaseg-insurance-options {
-                margin-bottom: 10px;
+                margin-bottom: 15px;
             }
             .simulaseg-insurance-option {
-                margin-bottom: 5px;
+                margin-bottom: 8px;
             }
             .simulaseg-required-indicator {
-                font-size: 0.8em;
+                font-size: 0.85em;
                 color: #666;
-                margin-top: 5px;
+                margin-top: 6px;
             }
             .simulaseg-insurance-error {
                 color: #dc3545;
-                font-size: 0.8em;
-                margin-top: 5px;
+                font-size: 0.85em;
+                margin-top: 6px;
                 display: none;
             }
             @media (max-width: 600px) {
                 .simulaseg-col {
                     flex: 100%;
-                    margin-bottom: 10px;
+                    margin-bottom: 15px;
+                }
+                .simulaseg-container {
+                    padding: 15px;
+                }
+                .simulaseg-header {
+                    padding: 15px;
+                }
+                .simulaseg-card {
+                    padding: 20px;
                 }
             }
         `;
@@ -448,278 +504,305 @@
                             <div class="simulaseg-error-message" id="simulaseg-state-error">Por favor, selecione seu estado.</div>
                         </div>
                         
-                        <!-- Seção de dados de contato -->
-                        <div class="simulaseg-contact-info-section">
-                            <h3 class="simulaseg-contact-info-title">Seus dados para simular</h3>
-                            <div class="simulaseg-row">
-                                <div class="simulaseg-col">
-                                    <div class="simulaseg-form-group">
-                                        <label for="simulaseg-user-name">Nome Completo</label>
-                                        <input type="text" id="simulaseg-user-name" placeholder="Seu nome completo" required>
-                                        <div class="simulaseg-error-message" id="simulaseg-user-name-error">Por favor, informe seu nome completo.</div>
-                                    </div>
-                                </div>
-                                <div class="simulaseg-col">
-                                    <div class="simulaseg-form-group">
-                                        <label for="simulaseg-user-phone">Telefone</label>
-                                        <input type="tel" id="simulaseg-user-phone" placeholder="+1 (XXX) XXX-XXXX" required>
-                                        <div class="simulaseg-error-message" id="simulaseg-user-phone-error">Por favor, informe um telefone válido.</div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <!-- Seção de pergunta sobre seguro de vida -->
-                        <div class="simulaseg-insurance-question-section" id="simulaseg-insurance-question-section">
-                            <h3 class="simulaseg-insurance-question-title">Você já tem seguro de vida atualmente?</h3>
-                            <div class="simulaseg-insurance-options">
-                                <div class="simulaseg-insurance-option">
-                                    <input type="radio" id="simulaseg-insurance-yes" name="simulaseg-has-insurance" value="yes">
-                                    <label for="simulaseg-insurance-yes">Sim, já tenho seguro de vida</label>
-                                </div>
-                                <div class="simulaseg-insurance-option">
-                                    <input type="radio" id="simulaseg-insurance-no" name="simulaseg-has-insurance" value="no">
-                                    <label for="simulaseg-insurance-no">Não, não tenho seguro de vida</label>
-                                </div>
-                            </div>
-                            <p class="simulaseg-required-indicator">* Esta informação é necessária para prosseguir</p>
-                            <div class="simulaseg-insurance-error" id="simulaseg-insurance-error">Por favor, selecione uma opção para continuar</div>
-                        </div>
-                        
-                        <button type="button" class="simulaseg-btn" id="simulaseg-calculate-btn">Simular</button>
-                    </form>
-                </div>
-                
-                <div class="simulaseg-result-section" id="simulaseg-result-section">
-                    <h2 class="simulaseg-result-title">Seguro de vida com benefício em vida</h2>
-                    <div class="simulaseg-result-price" id="simulaseg-monthly-price">$57/mês</div>
-                    <p class="simulaseg-result-note">Esta é uma simulação básica. O valor real pode variar após análise completa.</p>
-                    
-                    <div class="simulaseg-alert-box">
-                        <p class="simulaseg-alert-title">Quer saber exatamente quanto você teria de benefício em vida?</p>
-                        <p class="simulaseg-alert-message">Complete seu e-mail abaixo para receber informações detalhadas.</p>
-                    </div>
-                    
-                    <div class="simulaseg-lead-section">
-                        <form id="simulaseg-lead-form">
-                            <div class="simulaseg-form-group">
-                                <label for="simulaseg-user-email">E-mail</label>
-                                <input type="email" id="simulaseg-user-email" placeholder="seu@email.com" required>
-                                <div class="simulaseg-error-message" id="simulaseg-user-email-error">Por favor, informe um e-mail válido.</div>
-                            </div>
+                        <div id="simulaseg-result" class="simulaseg-result-section">
+                            <div class="simulaseg-result-title">Valor estimado do seguro:</div>
+                            <div class="simulaseg-result-price" id="simulaseg-price">$0.00/mês</div>
+                            <div class="simulaseg-result-note">Este é um valor estimado. O valor final pode variar de acordo com a avaliação completa.</div>
                             
-                            <button type="button" class="simulaseg-btn" id="simulaseg-submit-btn">Receber Cotação Detalhada</button>
-                        </form>
-                    </div>
-                </div>
-                
-                <div class="simulaseg-thank-you-section" id="simulaseg-thank-you-section">
-                    <h2 class="simulaseg-thank-you-title">Obrigado!</h2>
-                    <p>Recebemos suas informações e entraremos em contato em breve com mais detalhes sobre suas opções de seguro de vida.</p>
+                            <div class="simulaseg-lead-section">
+                                <div class="simulaseg-contact-info-title">Seus dados para simular</div>
+                                
+                                <div class="simulaseg-row">
+                                    <div class="simulaseg-col">
+                                        <div class="simulaseg-form-group">
+                                            <label for="simulaseg-name">Nome Completo</label>
+                                            <input type="text" id="simulaseg-name" placeholder="Seu nome completo" required>
+                                            <div class="simulaseg-error-message" id="simulaseg-name-error">Por favor, informe seu nome.</div>
+                                        </div>
+                                    </div>
+                                    <div class="simulaseg-col">
+                                        <div class="simulaseg-form-group">
+                                            <label for="simulaseg-phone">Telefone</label>
+                                            <input type="tel" id="simulaseg-phone" placeholder="+1 (XXX) XXX-XXXX" required>
+                                            <div class="simulaseg-error-message" id="simulaseg-phone-error">Por favor, informe seu telefone.</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="simulaseg-form-group">
+                                    <label for="simulaseg-email">Email</label>
+                                    <input type="email" id="simulaseg-email" placeholder="seu@email.com">
+                                    <div class="simulaseg-error-message" id="simulaseg-email-error">Por favor, informe um email válido.</div>
+                                </div>
+                                
+                                <div class="simulaseg-insurance-question-title">Você já tem seguro de vida atualmente?</div>
+                                <div class="simulaseg-insurance-options">
+                                    <div class="simulaseg-insurance-option">
+                                        <input type="radio" id="simulaseg-has-insurance-yes" name="simulaseg-has-insurance" value="yes">
+                                        <label for="simulaseg-has-insurance-yes">Sim, já tenho seguro de vida</label>
+                                    </div>
+                                    <div class="simulaseg-insurance-option">
+                                        <input type="radio" id="simulaseg-has-insurance-no" name="simulaseg-has-insurance" value="no" checked>
+                                        <label for="simulaseg-has-insurance-no">Não, não tenho seguro de vida</label>
+                                    </div>
+                                </div>
+                                <div class="simulaseg-insurance-error" id="simulaseg-insurance-error">Por favor, selecione uma opção.</div>
+                                
+                                <div class="simulaseg-required-indicator">* Esta informação é necessária para prosseguir</div>
+                                
+                                <button type="button" id="simulaseg-submit-btn" class="simulaseg-btn">Simular</button>
+                            </div>
+                        </div>
+                        
+                        <button type="button" id="simulaseg-calculate-btn" class="simulaseg-btn">Calcular</button>
+                    </form>
                     
-                    <a href="#" class="simulaseg-whatsapp-btn" id="simulaseg-whatsapp-btn">
-                        Falar agora via WhatsApp
-                    </a>
+                    <div id="simulaseg-thank-you" class="simulaseg-thank-you-section">
+                        <div class="simulaseg-thank-you-title">Obrigado pelo seu interesse!</div>
+                        <p>Recebemos sua solicitação e entraremos em contato em breve.</p>
+                        <p>Se preferir, entre em contato diretamente pelo WhatsApp:</p>
+                        <a href="#" id="simulaseg-whatsapp-link" class="simulaseg-whatsapp-btn" target="_blank">Falar pelo WhatsApp</a>
+                    </div>
                 </div>
             </div>
         `;
         
         // Add event listeners
-        document.getElementById('simulaseg-calculate-btn').addEventListener('click', calculateSimulation);
+        document.getElementById('simulaseg-calculate-btn').addEventListener('click', calculateInsurance);
         document.getElementById('simulaseg-submit-btn').addEventListener('click', submitLead);
         
         // Set WhatsApp link
-        const whatsappBtn = document.getElementById('simulaseg-whatsapp-btn');
-        whatsappBtn.href = `https://wa.me/${config.whatsapp}?text=${encodeURIComponent(config.message)}`;
-    }
-    
-    // Function to calculate simulation
-    function calculateSimulation() {
-        // Validate form
-        const age = document.getElementById('simulaseg-age').value;
-        const coverage = document.getElementById('simulaseg-coverage').value;
-        const state = document.getElementById('simulaseg-state').value;
-        const name = document.getElementById('simulaseg-user-name').value;
-        const phone = document.getElementById('simulaseg-user-phone').value;
-        const hasInsurance = document.querySelector('input[name="simulaseg-has-insurance"]:checked');
+        updateWhatsAppLink();
         
-        // Reset error messages
-        document.querySelectorAll('.simulaseg-error-message').forEach(el => el.style.display = 'none');
-        document.getElementById('simulaseg-insurance-error').style.display = 'none';
-        
-        // Validate fields
-        let isValid = true;
-        
-        if (!age) {
-            document.getElementById('simulaseg-age-error').style.display = 'block';
-            isValid = false;
-        }
-        
-        if (!coverage) {
-            document.getElementById('simulaseg-coverage-error').style.display = 'block';
-            isValid = false;
-        }
-        
-        if (!state) {
-            document.getElementById('simulaseg-state-error').style.display = 'block';
-            isValid = false;
-        }
-        
-        if (!name) {
-            document.getElementById('simulaseg-user-name-error').style.display = 'block';
-            isValid = false;
-        }
-        
-        if (!phone) {
-            document.getElementById('simulaseg-user-phone-error').style.display = 'block';
-            isValid = false;
-        }
-        
-        if (!hasInsurance) {
-            document.getElementById('simulaseg-insurance-error').style.display = 'block';
-            isValid = false;
-        }
-        
-        if (!isValid) return;
-        
-        // Calculate price based on age, coverage, and state
-        const coverageValue = parseInt(coverage);
-        const ageValue = parseInt(age);
-        const gender = document.querySelector('input[name="simulaseg-gender"]:checked').value;
-        const hasDisease = document.querySelector('input[name="simulaseg-disease"]:checked').value === 'yes';
-        
-        // Base rate per $1,000 of coverage
-        let baseRate = 0.15;
-        
-        // Adjust for age
-        if (ageValue < 30) {
-            baseRate = 0.12;
-        } else if (ageValue < 40) {
-            baseRate = 0.15;
-        } else if (ageValue < 50) {
-            baseRate = 0.22;
-        } else if (ageValue < 60) {
-            baseRate = 0.35;
-        } else {
-            baseRate = 0.55;
-        }
-        
-        // Adjust for gender
-        if (gender === 'female') {
-            baseRate *= 0.85;
-        }
-        
-        // Adjust for health condition
-        if (hasDisease) {
-            baseRate *= 1.5;
-        }
-        
-        // State factors
-        const stateFactors = {
-            'CA': 1.2, 'NY': 1.15, 'FL': 1.1, 'TX': 1.05,
-            'IL': 1.0, 'PA': 1.0, 'OH': 0.95, 'MI': 0.95,
-            'GA': 1.0, 'NC': 0.95, 'NJ': 1.1, 'VA': 0.95,
-            'WA': 1.05, 'AZ': 1.0, 'MA': 1.1, 'TN': 0.9,
-            'IN': 0.9, 'MO': 0.9, 'MD': 1.0, 'WI': 0.9,
-            'MN': 0.95, 'CO': 1.0, 'AL': 0.9, 'SC': 0.95,
-            'LA': 1.05, 'KY': 0.9, 'OR': 1.0, 'OK': 0.95,
-            'CT': 1.05, 'IA': 0.9, 'MS': 0.95, 'AR': 0.9,
-            'KS': 0.9, 'UT': 0.95, 'NV': 1.0, 'NM': 0.95,
-            'WV': 0.95, 'NE': 0.9, 'ID': 0.95, 'HI': 1.1,
-            'ME': 1.0, 'NH': 1.0, 'RI': 1.05, 'MT': 0.95,
-            'DE': 1.0, 'SD': 0.9, 'ND': 0.9, 'AK': 1.1,
-            'DC': 1.15, 'VT': 1.0, 'WY': 0.95
-        };
-        
-        const stateFactor = stateFactors[state] || 1.0;
-        
-        // Calculate monthly premium
-        const monthlyPremium = (coverageValue * baseRate * stateFactor) / 1000;
-        
-        // Format and display result
-        document.getElementById('simulaseg-monthly-price').textContent = formatCurrency(monthlyPremium) + '/mês';
-        
-        // Show results section
-        document.getElementById('simulaseg-result-section').style.display = 'block';
-        
-        // Scroll to results
-        document.getElementById('simulaseg-result-section').scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
-    
-    // Function to submit lead
-    function submitLead() {
-        const email = document.getElementById('simulaseg-user-email').value;
-        
-        // Validate email
-        if (!email) {
-            document.getElementById('simulaseg-user-email-error').style.display = 'block';
-            return;
-        }
-        
-        // Get form data
-        const name = document.getElementById('simulaseg-user-name').value;
-        const phone = document.getElementById('simulaseg-user-phone').value;
-        const age = document.getElementById('simulaseg-age').value;
-        const gender = document.querySelector('input[name="simulaseg-gender"]:checked').value;
-        const coverage = document.getElementById('simulaseg-coverage').value;
-        const state = document.getElementById('simulaseg-state').value;
-        const hasDisease = document.querySelector('input[name="simulaseg-disease"]:checked').value === 'yes';
-        const hasInsurance = document.querySelector('input[name="simulaseg-has-insurance"]:checked').value === 'yes';
-        
-        // Prepare lead data
-        const leadData = {
-            name: name,
-            email: email,
-            phone: phone,
-            age: age,
-            gender: gender,
-            coverage: coverage,
-            state: state,
-            has_disease: hasDisease,
-            has_insurance: hasInsurance
-        };
-        
-        // Send lead to Formspree if code is provided
-        if (config.formspreeCode) {
-            const formData = new FormData();
-            Object.keys(leadData).forEach(key => {
-                formData.append(key, leadData[key]);
-            });
+        // Function to calculate insurance
+        function calculateInsurance() {
+            // Get form values
+            const age = document.getElementById('simulaseg-age').value;
+            const gender = document.querySelector('input[name="simulaseg-gender"]:checked').value;
+            const coverage = document.getElementById('simulaseg-coverage').value;
+            const hasDisease = document.querySelector('input[name="simulaseg-disease"]:checked').value === 'yes';
+            const state = document.getElementById('simulaseg-state').value;
             
-            fetch(`https://formspree.io/f/${config.formspreeCode}`, {
+            // Validate form
+            let isValid = true;
+            
+            if (!age || age < 18 || age > 75) {
+                document.getElementById('simulaseg-age-error').style.display = 'block';
+                isValid = false;
+            } else {
+                document.getElementById('simulaseg-age-error').style.display = 'none';
+            }
+            
+            if (!coverage) {
+                document.getElementById('simulaseg-coverage-error').style.display = 'block';
+                isValid = false;
+            } else {
+                document.getElementById('simulaseg-coverage-error').style.display = 'none';
+            }
+            
+            if (!state) {
+                document.getElementById('simulaseg-state-error').style.display = 'block';
+                isValid = false;
+            } else {
+                document.getElementById('simulaseg-state-error').style.display = 'none';
+            }
+            
+            if (!isValid) {
+                return;
+            }
+            
+            // Calculate price based on factors
+            let baseRate = 0;
+            
+            // Base rate by coverage
+            switch (coverage) {
+                case '100000':
+                    baseRate = 15;
+                    break;
+                case '250000':
+                    baseRate = 25;
+                    break;
+                case '500000':
+                    baseRate = 40;
+                    break;
+                case '750000':
+                    baseRate = 55;
+                    break;
+                case '1000000':
+                    baseRate = 70;
+                    break;
+                default:
+                    baseRate = 15;
+            }
+            
+            // Adjust for age
+            const ageMultiplier = 1 + ((age - 18) * 0.02);
+            
+            // Adjust for gender (slightly lower for women based on statistical life expectancy)
+            const genderMultiplier = gender === 'female' ? 0.9 : 1;
+            
+            // Adjust for health condition
+            const healthMultiplier = hasDisease ? 1.5 : 1;
+            
+            // Adjust for state (simplified - in reality would be more complex)
+            let stateMultiplier = 1;
+            const highCostStates = ['CA', 'NY', 'NJ', 'MA', 'CT'];
+            const mediumCostStates = ['FL', 'IL', 'TX', 'WA', 'OR', 'CO'];
+            
+            if (highCostStates.includes(state)) {
+                stateMultiplier = 1.2;
+            } else if (mediumCostStates.includes(state)) {
+                stateMultiplier = 1.1;
+            }
+            
+            // Calculate final price
+            const monthlyPrice = baseRate * ageMultiplier * genderMultiplier * healthMultiplier * stateMultiplier;
+            
+            // Display result
+            document.getElementById('simulaseg-price').textContent = `$${monthlyPrice.toFixed(2)}/mês`;
+            document.getElementById('simulaseg-result').style.display = 'block';
+            document.getElementById('simulaseg-calculate-btn').style.display = 'none';
+            
+            // Scroll to results
+            document.getElementById('simulaseg-result').scrollIntoView({ behavior: 'smooth' });
+        }
+        
+        // Function to submit lead
+        function submitLead() {
+            // Get form values
+            const age = document.getElementById('simulaseg-age').value;
+            const gender = document.querySelector('input[name="simulaseg-gender"]:checked').value;
+            const coverage = document.getElementById('simulaseg-coverage').value;
+            const hasDisease = document.querySelector('input[name="simulaseg-disease"]:checked').value === 'yes';
+            const state = document.getElementById('simulaseg-state').value;
+            const name = document.getElementById('simulaseg-name').value;
+            const phone = document.getElementById('simulaseg-phone').value;
+            const email = document.getElementById('simulaseg-email').value;
+            const hasInsurance = document.querySelector('input[name="simulaseg-has-insurance"]:checked').value === 'yes';
+            
+            // Validate form
+            let isValid = true;
+            
+            if (!name) {
+                document.getElementById('simulaseg-name-error').style.display = 'block';
+                isValid = false;
+            } else {
+                document.getElementById('simulaseg-name-error').style.display = 'none';
+            }
+            
+            if (!phone) {
+                document.getElementById('simulaseg-phone-error').style.display = 'block';
+                isValid = false;
+            } else {
+                document.getElementById('simulaseg-phone-error').style.display = 'none';
+            }
+            
+            if (email && !isValidEmail(email)) {
+                document.getElementById('simulaseg-email-error').style.display = 'block';
+                isValid = false;
+            } else {
+                document.getElementById('simulaseg-email-error').style.display = 'none';
+            }
+            
+            if (!isValid) {
+                return;
+            }
+            
+            // Prepare lead data
+            const leadData = {
+                name: name,
+                phone: phone,
+                email: email || 'Não informado',
+                age: age,
+                gender: gender === 'male' ? 'Masculino' : 'Feminino',
+                coverage: coverage,
+                has_disease: hasDisease ? 'Sim' : 'Não',
+                state: state,
+                has_insurance: hasInsurance ? 'Sim' : 'Não',
+                monthly_price: document.getElementById('simulaseg-price').textContent,
+                agent_name: 'Agente SimulaSeg',
+                agent_email: config.email
+            };
+            
+            // Register lead
+            registerLead(config.agentId, leadData);
+            
+            // Submit to Formspree if code is provided
+            if (config.formspreeCode) {
+                submitToFormspree(leadData);
+            }
+            
+            // Show thank you message
+            document.getElementById('simulaseg-result').style.display = 'none';
+            document.getElementById('simulaseg-thank-you').style.display = 'block';
+            
+            // Redirect if URL is provided
+            if (config.thankYouUrl) {
+                setTimeout(function() {
+                    window.location.href = config.thankYouUrl;
+                }, 3000);
+            }
+        }
+        
+        // Function to submit to Formspree
+        function submitToFormspree(leadData) {
+            if (!config.formspreeCode) return;
+            
+            const formspreeUrl = `https://formspree.io/f/${config.formspreeCode}`;
+            
+            fetch(formspreeUrl, {
                 method: 'POST',
-                body: formData,
                 headers: {
+                    'Content-Type': 'application/json',
                     'Accept': 'application/json'
-                }
+                },
+                body: JSON.stringify(leadData)
             })
             .catch(error => {
-                console.error('SimulaSeg: Error sending lead to Formspree:', error);
+                console.error('SimulaSeg: Error submitting to Formspree:', error);
             });
         }
         
-        // Register lead in SimulaSeg system
-        registerLead(config.agentId, leadData);
+        // Function to validate email
+        function isValidEmail(email) {
+            const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return re.test(email);
+        }
         
-        // Show thank you section
-        document.getElementById('simulaseg-result-section').style.display = 'none';
-        document.getElementById('simulaseg-thank-you-section').style.display = 'block';
-        
-        // Redirect to thank you URL if provided
-        if (config.thankYouUrl) {
-            setTimeout(() => {
-                window.location.href = config.thankYouUrl;
-            }, 3000);
+        // Function to update WhatsApp link
+        function updateWhatsAppLink() {
+            const whatsappLink = document.getElementById('simulaseg-whatsapp-link');
+            if (whatsappLink && config.whatsapp) {
+                const message = encodeURIComponent(config.message);
+                whatsappLink.href = `https://wa.me/${config.whatsapp}?text=${message}`;
+            }
         }
     }
     
-    // Helper function to format currency
-    function formatCurrency(value) {
-        return new Intl.NumberFormat('en-US', {
-            style: 'currency',
-            currency: 'USD',
-            minimumFractionDigits: 0,
-            maximumFractionDigits: 0
-        }).format(value);
+    // Helper function to adjust color brightness
+    function adjustColor(hex, percent) {
+        // Convert hex to RGB
+        let r = parseInt(hex.substring(1, 3), 16);
+        let g = parseInt(hex.substring(3, 5), 16);
+        let b = parseInt(hex.substring(5, 7), 16);
+        
+        // Adjust brightness
+        r = Math.max(0, Math.min(255, r + percent));
+        g = Math.max(0, Math.min(255, g + percent));
+        b = Math.max(0, Math.min(255, b + percent));
+        
+        // Convert back to hex
+        return '#' + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
+    }
+    
+    // Helper function to convert hex to rgba
+    function hexToRgba(hex, alpha) {
+        // Convert hex to RGB
+        let r = parseInt(hex.substring(1, 3), 16);
+        let g = parseInt(hex.substring(3, 5), 16);
+        let b = parseInt(hex.substring(5, 7), 16);
+        
+        // Return rgba
+        return `rgba(${r}, ${g}, ${b}, ${alpha})`;
     }
 })();
